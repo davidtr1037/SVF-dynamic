@@ -61,7 +61,7 @@ public:
 
     /// Initialize nodes and edges
     //@{
-    void initalNode();
+    void initializeNodes();
     void addEdge(NodeID src, NodeID dst, PAGEdge::PEDGEK kind,
                  Size_t offset = 0, llvm::Instruction* cs = NULL);
     // @}
@@ -99,8 +99,8 @@ public:
     /// Handle globals including (global variable and functions)
     //@{
     void visitGlobal(llvm::Module& module);
-    void InitialGlobal(const llvm::GlobalVariable *gvar, llvm::Constant *C,
-                       u32_t offset, u32_t fieldidx);
+    void initializeGlobal(const llvm::GlobalVariable *gvar, llvm::Constant *C,
+                          u32_t offset, u32_t fieldidx);
     NodeID getGlobalVarField(const llvm::GlobalVariable *gvar, u32_t offset, u32_t fieldidx);
     //@}
 
