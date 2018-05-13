@@ -298,7 +298,7 @@ NodeID PAG::getGepObjNode(const MemObj* obj, const LocationSet& ls) {
     if (obj->isFieldInsensitive())
         return getFIObjNode(obj);
 
-    LocationSet newLS = SymbolTableInfo::Symbolnfo()->getModulusOffset(obj->getTypeInfo(),ls);
+    LocationSet newLS = SymbolTableInfo::SymbolInfo()->getModulusOffset(obj->getTypeInfo(),ls);
 
     NodeLocationSetMap::iterator iter = GepObjNodeMap.find(std::make_pair(base, newLS));
     if (iter == GepObjNodeMap.end()) {

@@ -108,7 +108,7 @@ bool LocSymTableInfo::computeGepOffset(const llvm::User *V, LocationSet& ls) {
             // Handling struct here
             else if (const StructType *ST = dyn_cast<StructType>(*gi)) {
                 assert(op && "non-const struct index in GEP");
-                const vector<u32_t> &so = SymbolTableInfo::Symbolnfo()->getStructOffsetVec(ST);
+                const vector<u32_t> &so = SymbolTableInfo::SymbolInfo()->getStructOffsetVec(ST);
                 if ((unsigned)idx >= so.size()) {
                     outs() << "!! Struct index out of bounds" << idx << "\n";
                     assert(0);
@@ -218,7 +218,7 @@ LocationSet LocSymTableInfo::getModulusOffset(ObjTypeInfo* tyInfo, const Locatio
 
     if (isa<StructType>(ety) || isa<ArrayType>(ety)) {
         /// Find an appropriate field for this LocationSet
-        const std::vector<FieldInfo>& infovec = SymbolTableInfo::Symbolnfo()->getFlattenFieldInfoVec(ety);
+        const std::vector<FieldInfo>& infovec = SymbolTableInfo::SymbolInfo()->getFlattenFieldInfoVec(ety);
         std::vector<FieldInfo>::const_iterator it = infovec.begin();
         std::vector<FieldInfo>::const_iterator eit = infovec.end();
         for (; it != eit; ++it) {

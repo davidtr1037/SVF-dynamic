@@ -93,7 +93,7 @@ private:
 
     /// Constructor
     PAG(bool buildFromFile) : fromFile(buildFromFile), curBB(NULL),curVal(NULL) {
-        symInfo = SymbolTableInfo::Symbolnfo();
+        symInfo = SymbolTableInfo::SymbolInfo();
         storeInstNum = 0;
         loadInstNum = 0;
     }
@@ -152,7 +152,7 @@ public:
     //@}
     /// Get LLVM Module
     static inline llvm::Module* getModule() {
-        return SymbolTableInfo::Symbolnfo()->getModule();
+        return SymbolTableInfo::SymbolInfo()->getModule();
     }
     /// Get/set methods to get control flow information of a PAGEdge
     //@{
@@ -553,7 +553,7 @@ public:
         return addValNode(NULL, new DummyValPN(i), i);
     }
     inline NodeID addDummyObjNode() {
-        const MemObj* mem = SymbolTableInfo::Symbolnfo()->createDummyObj(nodeNum);
+        const MemObj* mem = SymbolTableInfo::SymbolInfo()->createDummyObj(nodeNum);
         return addObjNode(NULL, new DummyObjPN(nodeNum,mem), nodeNum);
     }
     inline NodeID addBlackholeObjNode() {

@@ -165,7 +165,7 @@ void PTAStat::performStat() {
     generalNumMap[TotalNumOfPointers] = pag->getValueNodeNum() + pag->getFieldValNodeNum();
     generalNumMap[TotalNumOfObjects] = pag->getObjectNodeNum();
     generalNumMap[TotalNumOfFieldObjects] = pag->getFieldObjNodeNum();
-    generalNumMap[MaxStructSize] = SymbolTableInfo::Symbolnfo()->getMaxStructSize();
+    generalNumMap[MaxStructSize] = SymbolTableInfo::SymbolInfo()->getMaxStructSize();
     generalNumMap[TotalNumOfEdges] = pag->getPAGEdgeNum();
     generalNumMap[NumberOfFieldInsensitiveObj] = fiObjNumber;
     generalNumMap[NumberOfFieldSensitiveObj] = fsObjNumber;
@@ -252,7 +252,7 @@ void PTAStat::callgraphStat() {
 
 void PTAStat::printStat() {
 
-    StringRef fullName(SymbolTableInfo::Symbolnfo()->getModule()->getModuleIdentifier());
+    StringRef fullName(SymbolTableInfo::SymbolInfo()->getModule()->getModuleIdentifier());
     StringRef name = fullName.split('/').second;
     moduleName = name.split('.').first.str();
     std::cout << "################ (program : " << moduleName << ")###############\n";

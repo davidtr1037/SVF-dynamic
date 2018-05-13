@@ -426,9 +426,9 @@ public:
 
     /// Singleton design here to make sure we only have one instance during any analysis
     //@{
-    static SymbolTableInfo* Symbolnfo();
+    static SymbolTableInfo* SymbolInfo();
 
-    static void releaseSymbolnfo() {
+    static void releaseSymbolInfo() {
         delete symlnfo;
         symlnfo = NULL;
     }

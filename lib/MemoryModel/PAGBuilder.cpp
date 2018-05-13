@@ -107,7 +107,7 @@ PAG* PAGBuilder::build(llvm::Module& module) {
 void PAGBuilder::initializeNodes() {
     DBOUT(DPAGBuild, outs() << "Initialize PAG Nodes ...\n");
 
-    SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
+    SymbolTableInfo* symTable = SymbolTableInfo::SymbolInfo();
 
     pag->addBlackholeObjNode();
     pag->addConstantObjNode();
@@ -158,7 +158,7 @@ void PAGBuilder::initializeNodes() {
  * Return TRUE if the offset of this GEP insn is a constant.
  */
 bool PAGBuilder::computeGepOffset(const User *V, LocationSet& ls) {
-    return SymbolTableInfo::Symbolnfo()->computeGepOffset(V,ls);
+    return SymbolTableInfo::SymbolInfo()->computeGepOffset(V,ls);
 }
 
 /*!
@@ -287,7 +287,7 @@ void PAGBuilder::initializeGlobal(const GlobalVariable *gvar, Constant *C,
     } else if (isa<ConstantStruct>(C)) {
         const StructType *sty = cast<StructType>(C->getType());
         const std::vector<u32_t>& offsetvect =
-            SymbolTableInfo::Symbolnfo()->getStructOffsetVec(sty);
+            SymbolTableInfo::SymbolInfo()->getStructOffsetVec(sty);
         for (u32_t i = 0, e = C->getNumOperands(); i != e; i++) {
             u32_t off = offsetvect[i];
             initializeGlobal(gvar, cast<Constant>(C->getOperand(i)), offset + off, i);
@@ -668,7 +668,7 @@ void PAGBuilder::handleDirectCall(CallSite cs, const Function *F) {
  * Find the base type and the max possible offset of an object pointed to by (V).
  */
 const Type *PAGBuilder::getBaseTypeAndFlattenedFields(Value *V, std::vector<LocationSet> &fields) {
-    return SymbolTableInfo::Symbolnfo()->getBaseTypeAndFlattenedFields(V, fields);
+    return SymbolTableInfo::SymbolInfo()->getBaseTypeAndFlattenedFields(V, fields);
 }
 
 /*!
@@ -911,7 +911,7 @@ void PAGBuilder::handleExtCall(CallSite cs, const Function *callee) {
                 break;
             }
             case ExtAPI::CPP_EFT_A0R_A1: {
-                SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
+                SymbolTableInfo* symTable = SymbolTableInfo::SymbolInfo();
                 if (symTable->getModelConstants()) {
                     NodeID vnD = pag->getValueNode(cs.getArgument(0));
                     NodeID vnS = pag->getValueNode(cs.getArgument(1));
@@ -920,7 +920,7 @@ void PAGBuilder::handleExtCall(CallSite cs, const Function *callee) {
                 break;
             }
             case ExtAPI::CPP_EFT_A0R_A1R: {
-                SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
+                SymbolTableInfo* symTable = SymbolTableInfo::SymbolInfo();
                 if (symTable->getModelConstants()) {
                     NodeID vnD = getValueNode(cs.getArgument(0));
                     NodeID vnS = getValueNode(cs.getArgument(1));
@@ -932,7 +932,7 @@ void PAGBuilder::handleExtCall(CallSite cs, const Function *callee) {
                 break;
             }
             case ExtAPI::CPP_EFT_A1R: {
-                SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
+                SymbolTableInfo* symTable = SymbolTableInfo::SymbolInfo();
                 if (symTable->getModelConstants()) {
                     NodeID vnS = getValueNode(cs.getArgument(1));
                     assert(vnS && "src not exist?");

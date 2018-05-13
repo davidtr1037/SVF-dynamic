@@ -138,7 +138,7 @@ void PointerAnalysis::initialize(Module& module) {
         chgraph->buildCHG(module);
 
         DBOUT(DGENERAL, outs() << pasMsg("Building Symbol table ...\n"));
-        SymbolTableInfo* symTable = SymbolTableInfo::Symbolnfo();
+        SymbolTableInfo* symTable = SymbolTableInfo::SymbolInfo();
         symTable->buildMemModel(module);
 
         DBOUT(DGENERAL, outs() << pasMsg("Building PAG ...\n"));
@@ -288,9 +288,9 @@ void PointerAnalysis::dumpAllTypes()
         outs() << "\nNodeID " << node->getId() << "\n";
 
         llvm::Type* type = node->getValue()->getType();
-        SymbolTableInfo::Symbolnfo()->printFlattenFields(type);
+        SymbolTableInfo::SymbolInfo()->printFlattenFields(type);
         if (PointerType* ptType = dyn_cast<PointerType>(type))
-            SymbolTableInfo::Symbolnfo()->printFlattenFields(ptType->getElementType());
+            SymbolTableInfo::SymbolInfo()->printFlattenFields(ptType->getElementType());
     }
 }
 

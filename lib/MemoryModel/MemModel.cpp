@@ -62,7 +62,7 @@ static cl::opt<bool> modelConsts("modelConsts", cl::init(false),
 /*!
  * Get the symbol table instance
  */
-SymbolTableInfo* SymbolTableInfo::Symbolnfo() {
+SymbolTableInfo* SymbolTableInfo::SymbolInfo() {
     if (symlnfo == NULL) {
         if(LocMemModel)
             symlnfo = new LocSymTableInfo();
@@ -228,7 +228,7 @@ bool SymbolTableInfo::computeGepOffset(const llvm::User *V, LocationSet& ls) {
 
         if (const StructType *ST = dyn_cast<StructType>(*gi)) {
             assert(op && "non-const struct index in GEP");
-            const vector<u32_t> &so = SymbolTableInfo::Symbolnfo()->getStructOffsetVec(ST);
+            const vector<u32_t> &so = SymbolTableInfo::SymbolInfo()->getStructOffsetVec(ST);
             if ((unsigned)idx >= so.size()) {
                 outs() << "!! Struct index out of bounds" << idx << "\n";
                 assert(0);
@@ -250,7 +250,7 @@ u32_t SymbolTableInfo::getFields(std::vector<LocationSet>& fields, const llvm::T
         return 0;
 
     T = T->getContainedType(0);
-    const std::vector<FieldInfo>& stVec = SymbolTableInfo::Symbolnfo()->getFlattenFieldInfoVec(T);
+    const std::vector<FieldInfo>& stVec = SymbolTableInfo::SymbolInfo()->getFlattenFieldInfoVec(T);
     u32_t sz = stVec.size();
     if (msz < sz) {
         /// Replace fields with T's flatten fields.
@@ -353,7 +353,7 @@ void ObjTypeInfo::analyzeGlobalStackObjType(const llvm::Value* val) {
             setFlag(VAR_ARRAY_OBJ);
     }
     if (const StructType *ST= dyn_cast<StructType>(elemTy)) {
-        const std::vector<FieldInfo>& flattenFields = SymbolTableInfo::Symbolnfo()->getFlattenFieldInfoVec(ST);
+        const std::vector<FieldInfo>& flattenFields = SymbolTableInfo::SymbolInfo()->getFlattenFieldInfoVec(ST);
         for(std::vector<FieldInfo>::const_iterator it = flattenFields.begin(), eit = flattenFields.end();
                 it!=eit; ++it) {
             if((*it).getFlattenElemTy()->isPointerTy())
@@ -389,7 +389,7 @@ u32_t ObjTypeInfo::getObjSize(const Value* val) {
     Type* ety  = cast<PointerType>(val->getType())->getElementType();
     u32_t numOfFields = 1;
     if (isa<StructType>(ety) || isa<ArrayType>(ety)) {
-        numOfFields = SymbolTableInfo::Symbolnfo()->getFlattenFieldInfoVec(ety).size();
+        numOfFields = SymbolTableInfo::SymbolInfo()->getFlattenFieldInfoVec(ety).size();
     }
     return numOfFields;
 }
@@ -413,7 +413,7 @@ void ObjTypeInfo::init(const Value* val) {
     }
     else if(isa<GlobalVariable>(val)) {
         setFlag(GLOBVAR_OBJ);
-        if(SymbolTableInfo::Symbolnfo()->isConstantObjSym(val))
+        if(SymbolTableInfo::SymbolInfo()->isConstantObjSym(val))
             setFlag(CONST_OBJ);
         analyzeGlobalStackObjType(val);
         objSize = getObjSize(val);
@@ -460,7 +460,7 @@ bool ObjTypeInfo::isNonPtrFieldObj(const LocationSet& ls)
 
     if (isa<StructType>(ety) || isa<ArrayType>(ety)) {
         bool hasIntersection = false;
-        const vector<FieldInfo> &infovec = SymbolTableInfo::Symbolnfo()->getFlattenFieldInfoVec(ety);
+        const vector<FieldInfo> &infovec = SymbolTableInfo::SymbolInfo()->getFlattenFieldInfoVec(ety);
         vector<FieldInfo>::const_iterator it = infovec.begin();
         vector<FieldInfo>::const_iterator eit = infovec.end();
         for (; it != eit; ++it) {
@@ -969,7 +969,7 @@ void SymbolTableInfo::handleGlobalInitializerCE(const Constant *C,
     } else if (isa<ConstantStruct>(C)) {
         const StructType *sty = cast<StructType>(C->getType());
         const std::vector<u32_t>& offsetvect =
-            SymbolTableInfo::Symbolnfo()->getStructOffsetVec(sty);
+            SymbolTableInfo::SymbolInfo()->getStructOffsetVec(sty);
         for (u32_t i = 0, e = C->getNumOperands(); i != e; i++) {
             u32_t off = offsetvect[i];
             handleGlobalInitializerCE(cast<Constant>(C->getOperand(i)),
