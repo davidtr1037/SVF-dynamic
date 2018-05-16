@@ -63,6 +63,10 @@ private:
     std::vector<u32_t> foffset;
     /// All field infos after flattening a struct
     std::vector<FieldInfo> finfo;
+    /* TODO: add docs */
+    std::vector<FieldLayout> fieldLayout;
+    /* TODO: add docs */
+    u32_t size;
 public:
     /// Constructor
     StInfo() {
@@ -79,6 +83,12 @@ public:
     }
     std::vector<FieldInfo>& getFlattenFieldInfoVec() {
         return finfo;
+    }
+    std::vector<FieldLayout>& getFieldLayoutVec() {
+        return fieldLayout;
+    }
+    u32_t &getSize() {
+        return size;
     }
     //@}
 

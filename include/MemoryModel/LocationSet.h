@@ -38,6 +38,20 @@
 
 #include <llvm/IR/Type.h>
 
+struct FieldLayout {
+    /* the type of the field */
+    const llvm::Type *type;
+    /* the size of the type (without alignment) */
+    unsigned int size;
+    /* the offset of the field within the containing struct */
+    unsigned int offset;
+
+    FieldLayout(const llvm::Type *type, unsigned int size, unsigned int offset) :
+        type(type), size(size), offset(offset) {
+
+    }
+};
+
 /*!
  * Field information of an aggregate object
  */

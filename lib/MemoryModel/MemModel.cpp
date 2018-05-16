@@ -95,12 +95,17 @@ void SymbolTableInfo::collectArrayInfo(const ArrayType* ty) {
     StInfo* stinfo = new StInfo();
     typeToFieldInfo[ty] = stinfo;
 
+    stinfo->getSize() = getTypeSizeInBytes(ty);
+
     /// Array itself only has one field which is the inner most element
     stinfo->getFieldOffsetVec().push_back(0);
 
     llvm::Type* elemTy = ty->getElementType();
     while (const ArrayType* aty = dyn_cast<ArrayType>(elemTy))
         elemTy = aty->getElementType();
+
+    FieldLayout fieldLayout(elemTy, getTypeSizeInBytes(elemTy), 0);
+    stinfo->getFieldLayoutVec().push_back(fieldLayout);
 
     /// Array's flatten field infor is the same as its element's
     /// flatten infor.
@@ -127,8 +132,13 @@ void SymbolTableInfo::collectStructInfo(const StructType *sty) {
     StInfo* stinfo = new StInfo();
     typeToFieldInfo[sty] = stinfo;
 
+    stinfo->getSize() = getTypeSizeInBytes(sty);
+
+    const StructLayout *layout = getDataLayout()->getStructLayout(const_cast<StructType *>(sty));
+
     // Number of fields have been placed in the expanded struct
     u32_t nf = 0;
+    u32_t fieldIndex = 0;
 
     for (StructType::element_iterator it = sty->element_begin(), ie =
                 sty->element_end(); it != ie; ++it) {
@@ -136,6 +146,11 @@ void SymbolTableInfo::collectStructInfo(const StructType *sty) {
         stinfo->getFieldOffsetVec().push_back(nf);
 
         const Type *et = *it;
+
+        u32_t typeSize = getTypeSizeInBytes(et);
+        FieldLayout fieldLayout(et, typeSize, layout->getElementOffset(fieldIndex++));
+        stinfo->getFieldLayoutVec().push_back(fieldLayout);
+
         if (isa<StructType>(et) || isa<ArrayType>(et)) {
             StInfo * subStinfo = getStructInfo(et);
             u32_t nfE = subStinfo->getFlattenFieldInfoVec().size();
@@ -173,6 +188,8 @@ void SymbolTableInfo::collectSimpleTypeInfo(const llvm::Type* ty)
     StInfo* stinfo = new StInfo();
     typeToFieldInfo[ty] = stinfo;
 
+    stinfo->getSize() = getTypeSizeInBytes(ty);
+
     /// Only one field
     stinfo->getFieldOffsetVec().push_back(0);
 
@@ -180,6 +197,7 @@ void SymbolTableInfo::collectSimpleTypeInfo(const llvm::Type* ty)
     pair.push_back(std::make_pair(1,0));
     FieldInfo field(0, ty, pair);
     stinfo->getFlattenFieldInfoVec().push_back(field);
+    stinfo->getFieldLayoutVec().push_back(FieldLayout(ty, getTypeSizeInBytes(ty), 0));
 }
 
 /*!
