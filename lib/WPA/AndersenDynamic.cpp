@@ -1,14 +1,14 @@
 #include "MemoryModel/PAG.h"
 #include "MemoryModel/ConsG.h"
 #include "WPA/Andersen.h"
-#include "WPA/DynamicAndersenBase.h"
+#include "WPA/AndersenDynamic.h"
 #include "Util/AnalysisUtil.h"
 
 using namespace llvm;
 using namespace analysisUtil;
 
 
-void DynamicAndersenBase::initialize(Module& module) {
+void AndersenDynamic::initialize(Module& module) {
     resetData();
     PointerAnalysis::initialize(module);
 
@@ -18,17 +18,15 @@ void DynamicAndersenBase::initialize(Module& module) {
     stat = new AndersenStat(this);
 }
 
-void DynamicAndersenBase::analyzeFunction(Module& module, Function *f) {
+void AndersenDynamic::analyzeFunction(Module& module, Function *f) {
     entry = f;
     analyze(module);
 }
 
-void DynamicAndersenBase::analyze(Module& module) {
+void AndersenDynamic::analyze(Module& module) {
+    /* build the reduced constraint graph */
     consCG->buildReducedCG(entry);
     setGraph(consCG);
-
-    /* a custuomized setup of the points-to image */
-    setup();
 
     /* process address edges */
     processAllAddr();

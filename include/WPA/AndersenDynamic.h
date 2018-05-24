@@ -6,9 +6,9 @@
 #include <llvm/IR/Function.h>
 
 
-class DynamicAndersenBase : public Andersen {
+class AndersenDynamic : public Andersen {
 public:
-    DynamicAndersenBase() : Andersen(Andersen_WPA), entry(NULL) {
+    AndersenDynamic() : Andersen(Andersen_WPA), entry(NULL) {
 
     }
 
@@ -17,8 +17,6 @@ public:
     void analyze(llvm::Module& module);
 
     void analyzeFunction(llvm::Module& module, llvm::Function *f);
-
-    virtual void setup() = 0;
 
 private:
 
