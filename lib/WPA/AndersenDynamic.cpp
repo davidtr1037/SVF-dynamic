@@ -1,15 +1,32 @@
 #include "MemoryModel/PAG.h"
+#include "MemoryModel/ConsG.h"
 #include "WPA/Andersen.h"
 #include "WPA/DynamicAndersenBase.h"
 #include "Util/AnalysisUtil.h"
-
-#include <llvm/Support/CommandLine.h> // for tool output file
 
 using namespace llvm;
 using namespace analysisUtil;
 
 
-void DynamicAndersenBase::analyze(llvm::Module& module) {
+void DynamicAndersenBase::initialize(Module& module) {
+    resetData();
+    PointerAnalysis::initialize(module);
+
+    /* create the object only (without actually building the graph) */
+    consCG = new ConstraintGraph(pag, false);
+
+    stat = new AndersenStat(this);
+}
+
+void DynamicAndersenBase::analyzeFunction(Module& module, Function *f) {
+    entry = f;
+    analyze(module);
+}
+
+void DynamicAndersenBase::analyze(Module& module) {
+    consCG->buildReducedCG(entry);
+    setGraph(consCG);
+
     /* a custuomized setup of the points-to image */
     setup();
 
