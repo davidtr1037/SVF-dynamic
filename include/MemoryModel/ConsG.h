@@ -33,6 +33,8 @@
 #include "MemoryModel/ConsGEdge.h"
 #include "MemoryModel/ConsGNode.h"
 
+#include <set>
+
 /*!
  * Constraint graph for Andersen's analysis
  * ConstraintNodes are same as PAGNodes
@@ -46,6 +48,7 @@ public:
     typedef llvm::DenseMap<NodeID, NodeID> NodeToRepMap;
     typedef llvm::DenseMap<NodeID, NodeBS> NodeToSubsMap;
     typedef FIFOWorkList<NodeID> WorkList;
+    typedef std::set<const llvm::Function *> FunctionSet;
 private:
     PAG*pag;
     NodeToRepMap nodeToRepMap;
@@ -60,7 +63,11 @@ private:
 
     WorkList nodesToBeCollapsed;
 
-    void buildCG();
+    void buildCG(llvm::Function *entry = NULL);
+
+    void computeReachableFunctions(llvm::Function *entry, FunctionSet &results);
+
+    bool shouldAddEdge(PAGEdge *edge, llvm::Function *entry, FunctionSet &reachable);
 
     void destroy();
 
@@ -81,12 +88,23 @@ private:
 
 public:
     /// Constructor
-    ConstraintGraph(PAG* p): pag(p), edgeIndex(0) {
-        buildCG();
+    ConstraintGraph(PAG* p, bool build = true): pag(p), edgeIndex(0) {
+        if (build) {
+            buildCG();
+        }
     }
     /// Destructor
     virtual ~ConstraintGraph() {
         destroy();
+    }
+
+    /// ...
+    void buildReducedCG(llvm::Function *entry) {
+        if (!entry) {
+            assert(false);
+        }
+
+        buildCG(entry);
     }
 
     /// Get/add/remove constraint node
