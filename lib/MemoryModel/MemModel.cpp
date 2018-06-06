@@ -147,9 +147,16 @@ void SymbolTableInfo::collectStructInfo(const StructType *sty) {
 
         const Type *et = *it;
 
-        u32_t typeSize = getTypeSizeInBytes(et);
-        FieldLayout fieldLayout(et, typeSize, layout->getElementOffset(fieldIndex++));
+        u32_t alignedSize;
+        if (fieldIndex == sty->getNumElements() - 1) {
+            alignedSize = stinfo->getSize() - layout->getElementOffset(fieldIndex);
+        } else {
+            alignedSize = layout->getElementOffset(fieldIndex + 1) - layout->getElementOffset(fieldIndex);
+        }
+        FieldLayout fieldLayout(et, alignedSize, layout->getElementOffset(fieldIndex));
         stinfo->getFieldLayoutVec().push_back(fieldLayout);
+
+        fieldIndex++;
 
         if (isa<StructType>(et) || isa<ArrayType>(et)) {
             StInfo * subStinfo = getStructInfo(et);

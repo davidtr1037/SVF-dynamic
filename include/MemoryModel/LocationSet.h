@@ -41,7 +41,7 @@
 struct FieldLayout {
     /* the type of the field */
     const llvm::Type *type;
-    /* the size of the type (without alignment) */
+    /* the size of the field (including padding) */
     unsigned int size;
     /* the offset of the field within the containing struct */
     unsigned int offset;
