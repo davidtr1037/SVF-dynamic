@@ -859,6 +859,7 @@ void SymbolTableInfo::collectVararg(const llvm::Function *val) {
 void SymbolTableInfo::collectExternalObj(const Value *val, SymID symId) {
     ValueToIDMapTy::iterator iter = objSymMap.find(val);
     if (iter != objSymMap.end()) {
+        assert(false);
         return;
     }
 
