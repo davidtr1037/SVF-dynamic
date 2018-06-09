@@ -856,6 +856,23 @@ void SymbolTableInfo::collectVararg(const llvm::Function *val) {
     }
 }
 
+void SymbolTableInfo::collectExternalObj(const Value *val, SymID symId) {
+    ValueToIDMapTy::iterator iter = objSymMap.find(val);
+    if (iter != objSymMap.end()) {
+        return;
+    }
+
+    objSymMap.insert(make_pair(val, symId));
+    symTyMap.insert(make_pair(symId, ObjSym));
+
+    MemObj* mem = new MemObj(val, symId);
+    assert(objMap.find(symId) == objMap.end());
+    objMap[symId] = mem;
+
+    /* TODO: how should we update this? */
+    totalSymNum = ++symId;
+}
+
 /*!
  * Check whether this value is null pointer
  */

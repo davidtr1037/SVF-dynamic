@@ -592,6 +592,13 @@ public:
     inline NodeID addVarargNode(const llvm::Function* val, PAGNode *node, NodeID i) {
         return addNode(node,i);
     }
+    /// Add an object node for an external LLVM value (cloned, ...)
+    /// This API should be used after the PAG construction
+    inline NodeID addExternalObjNode(const llvm::Value *val) {
+        NodeID newId = nodeNum;
+        SymbolTableInfo::SymbolInfo()->collectExternalObj(val, newId);
+        return addObjNode(val, newId);
+    }
 
     /// Add an edge into PAG
     //@{

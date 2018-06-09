@@ -493,6 +493,8 @@ public:
     void collectRet(const llvm::Function *val);
 
     void collectVararg(const llvm::Function *val);
+
+    void collectExternalObj(const llvm::Value *val, SymID symId);
     //@}
 
     /// special value
