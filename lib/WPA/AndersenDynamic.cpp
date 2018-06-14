@@ -32,6 +32,11 @@ void AndersenDynamic::analyze(Module& module) {
     processAllAddr();
 
     do {
+        numOfIteration++;
+        if (numOfIteration == 0 % OnTheFlyIterBudgetForStat) {
+            dumpStat();
+        }
+
         reanalyze = false;
 
         /* start solving constraints */
@@ -47,4 +52,29 @@ void AndersenDynamic::analyze(Module& module) {
     } while (reanalyze);
 
     finalize();
+}
+
+bool AndersenDynamic::updateCallGraph(const CallSiteToFunPtrMap& callsites) {
+    CallEdgeMap newEdges;
+    onTheFlyCallGraphSolve(callsites,newEdges);
+    FunctionSet newFunctions;
+
+    NodePairSet cpySrcNodes;
+    for (auto &it : newEdges) {
+        llvm::CallSite cs = it.first;
+        for (const Function *f : it.second) {
+            consCG->connectCaller2CalleeParams(cs, f, cpySrcNodes);
+            newFunctions.insert(f);
+        }
+    }
+
+    for (const Function *f : newFunctions) {
+        consCG->addCGEdges(f);
+    }
+
+    for (auto &it : cpySrcNodes) {
+        pushIntoWorklist(it.first);
+    }
+
+    return !newEdges.empty();
 }

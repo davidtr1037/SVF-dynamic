@@ -63,11 +63,11 @@ private:
 
     WorkList nodesToBeCollapsed;
 
-    void buildCG(llvm::Function *entry = NULL);
+    void buildCG(const llvm::Function *entry = NULL);
 
-    void computeReachableFunctions(llvm::Function *entry, FunctionSet &results);
+    void computeReachableFunctions(const llvm::Function *entry, FunctionSet &results);
 
-    bool shouldAddEdge(PAGEdge *edge, llvm::Function *entry, FunctionSet &reachable);
+    bool shouldAddEdge(PAGEdge *edge, const llvm::Function *entry, FunctionSet &reachable);
 
     void destroy();
 
@@ -99,13 +99,15 @@ public:
     }
 
     /// ...
-    void buildReducedCG(llvm::Function *entry) {
+    void buildReducedCG(const llvm::Function *entry) {
         if (!entry) {
             assert(false);
         }
 
         buildCG(entry);
     }
+
+    void addCGEdges(const llvm::Function *entry);
 
     /// Get/add/remove constraint node
     //@{

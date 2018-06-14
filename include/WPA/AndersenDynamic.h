@@ -14,6 +14,8 @@ public:
 
     void initialize(llvm::Module& module);
 
+    bool updateCallGraph(const CallSiteToFunPtrMap& callsites);
+
     void analyze(llvm::Module& module);
 
     void analyzeFunction(llvm::Module& module, llvm::Function *f);

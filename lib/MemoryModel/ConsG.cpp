@@ -46,15 +46,22 @@ static cl::opt<bool> ConsCGDotGraph("dump-consG", cl::init(false),
 /*!
  * Start building constraint graph
  */
-void ConstraintGraph::buildCG(llvm::Function *entry) {
-    FunctionSet reachable;
-    if (entry) {
-        computeReachableFunctions(entry, reachable);
-    }
-
+void ConstraintGraph::buildCG(const llvm::Function *entry) {
     // initialize nodes
     for(PAG::iterator it = pag->begin(), eit = pag->end(); it!=eit; ++it) {
         addConstraintNode(new ConstraintNode(it->first),it->first);
+    }
+
+    addCGEdges(entry);
+}
+
+/*!
+ * Add the edges of the sub-graph
+ */
+void ConstraintGraph::addCGEdges(const llvm::Function *entry) {
+    FunctionSet reachable;
+    if (entry) {
+        computeReachableFunctions(entry, reachable);
     }
 
     // initialize edges
@@ -149,7 +156,8 @@ void ConstraintGraph::buildCG(llvm::Function *entry) {
     }
 }
 
-void ConstraintGraph::computeReachableFunctions(Function *entry, FunctionSet &results) {
+void ConstraintGraph::computeReachableFunctions(const Function *entry,
+                                                FunctionSet &results) {
     stack<const Function *> worklist;
     FunctionSet pushed;
 
@@ -187,7 +195,7 @@ void ConstraintGraph::computeReachableFunctions(Function *entry, FunctionSet &re
 }
 
 bool ConstraintGraph::shouldAddEdge(PAGEdge *edge,
-                                    Function *entry,
+                                    const Function *entry,
                                     FunctionSet &reachable) {
     if (!entry) {
         return true;
