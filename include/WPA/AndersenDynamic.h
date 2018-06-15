@@ -20,6 +20,10 @@ public:
 
     void analyzeFunction(llvm::Module& module, llvm::Function *f);
 
+    void weakUpdate(NodeID src, NodeID dst);
+
+    void strongUpdate(NodeID src, NodeID dst);
+
 private:
 
     llvm::Function *entry;

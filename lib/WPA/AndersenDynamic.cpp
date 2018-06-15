@@ -78,3 +78,17 @@ bool AndersenDynamic::updateCallGraph(const CallSiteToFunPtrMap& callsites) {
 
     return !newEdges.empty();
 }
+
+void AndersenDynamic::weakUpdate(NodeID src, NodeID dst) {
+    if (dst != getPAG()->getNullPtr()) {
+        addPts(src, dst);
+    }
+}
+
+void AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
+    PointsTo &pts = getPts(src);
+    pts.clear();
+    if (dst != getPAG()->getNullPtr()) {
+        pts.set(dst);
+    }
+}
