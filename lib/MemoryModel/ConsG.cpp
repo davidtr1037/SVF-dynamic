@@ -176,8 +176,10 @@ void ConstraintGraph::computeReachableFunctions(const Function *entry,
             }
 
             const CallInst *callInst = dyn_cast<CallInst>(inst);
-            const Function *target = callInst->getCalledFunction();
+            const Function *target = getCallee(callInst);
             if (!target) {
+                CallSite cs((Instruction *)(callInst));
+                addIndirectCallSite(cs, pag->getValueNode(cs.getCalledValue()));
                 continue;
             }
 

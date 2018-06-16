@@ -43,7 +43,7 @@ void AndersenDynamic::analyze(Module& module) {
         solve();
 
         double cgUpdateStart = stat->getClk();
-        if (updateCallGraph(getIndirectCallsites())) {
+        if (updateCallGraph(consCG->getIndirectCallsites())) {
             reanalyze = true;
         }
 

@@ -63,6 +63,8 @@ private:
 
     WorkList nodesToBeCollapsed;
 
+    PAG::CallSiteToFunPtrMap indirectCallSites;
+
     void buildCG(const llvm::Function *entry = NULL);
 
     void computeReachableFunctions(const llvm::Function *entry, FunctionSet &results);
@@ -85,6 +87,10 @@ private:
         return pag->getVarargNode(value);
     }
     //@}
+
+    inline void addIndirectCallSite(const llvm::CallSite cs, NodeID funPtr) {
+        indirectCallSites.insert(std::make_pair(cs, funPtr));
+    }
 
 public:
     /// Constructor
@@ -248,7 +254,8 @@ public:
     /// Wrappers for invoking PAG methods
     //@{
     inline const PAG::CallSiteToFunPtrMap& getIndirectCallsites() const {
-        return pag->getIndirectCallsites();
+        /* we don't use here the information from the PAG */
+        return indirectCallSites;
     }
     inline NodeID getBlackHoleNode() {
         return pag->getBlackHoleNode();
