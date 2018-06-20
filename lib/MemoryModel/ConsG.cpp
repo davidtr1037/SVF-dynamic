@@ -62,6 +62,13 @@ void ConstraintGraph::addCGEdges(const llvm::Function *entry) {
     FunctionSet reachable;
     if (entry) {
         computeReachableFunctions(entry, reachable);
+        for (const Function *f : addedFunctions) {
+            FunctionSet::iterator i = reachable.find(f);
+            if (i != reachable.end()) {
+                /* the sub-graph for this function is already constructed */
+                reachable.erase(i);
+            }
+        }
     }
 
     // initialize edges
@@ -152,6 +159,12 @@ void ConstraintGraph::addCGEdges(const llvm::Function *entry) {
         PAGEdge* edge = *iter;
         if (shouldAddEdge(edge, entry, reachable)) {
             addStoreCGEdge(edge->getSrcID(),edge->getDstID());
+        }
+    }
+
+    if (entry) {
+        for (const Function *f : reachable) {
+            addedFunctions.insert(f);
         }
     }
 }

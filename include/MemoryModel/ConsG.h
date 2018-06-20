@@ -63,6 +63,9 @@ private:
 
     WorkList nodesToBeCollapsed;
 
+    /* used only when building a partial graph */
+    FunctionSet addedFunctions;
+
     PAG::CallSiteToFunPtrMap indirectCallSites;
 
     void buildCG(const llvm::Function *entry = NULL);
