@@ -72,7 +72,13 @@ private:
 
     void computeReachableFunctions(const llvm::Function *entry, FunctionSet &results);
 
-    bool shouldAddEdge(PAGEdge *edge, const llvm::Function *entry, FunctionSet &reachable);
+    bool shouldAddEdge(PAGEdge *edge,
+                       const llvm::Function *entry,
+                       FunctionSet &reachable);
+
+    bool shouldAddNode(PAGNode *node,
+                       const llvm::Function *entry,
+                       FunctionSet &reachable);
 
     void destroy();
 
@@ -115,8 +121,6 @@ public:
 
         buildCG(entry);
     }
-
-    void addCGEdges(const llvm::Function *entry);
 
     /// Get/add/remove constraint node
     //@{

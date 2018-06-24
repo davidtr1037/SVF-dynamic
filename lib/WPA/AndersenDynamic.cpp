@@ -69,7 +69,7 @@ bool AndersenDynamic::updateCallGraph(const CallSiteToFunPtrMap& callsites) {
     }
 
     for (const Function *f : newFunctions) {
-        consCG->addCGEdges(f);
+        consCG->buildReducedCG(f);
     }
 
     for (auto &it : cpySrcNodes) {

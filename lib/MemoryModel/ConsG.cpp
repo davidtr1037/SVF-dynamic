@@ -47,18 +47,6 @@ static cl::opt<bool> ConsCGDotGraph("dump-consG", cl::init(false),
  * Start building constraint graph
  */
 void ConstraintGraph::buildCG(const llvm::Function *entry) {
-    // initialize nodes
-    for(PAG::iterator it = pag->begin(), eit = pag->end(); it!=eit; ++it) {
-        addConstraintNode(new ConstraintNode(it->first),it->first);
-    }
-
-    addCGEdges(entry);
-}
-
-/*!
- * Add the edges of the sub-graph
- */
-void ConstraintGraph::addCGEdges(const llvm::Function *entry) {
     FunctionSet reachable;
     if (entry) {
         computeReachableFunctions(entry, reachable);
@@ -67,6 +55,17 @@ void ConstraintGraph::addCGEdges(const llvm::Function *entry) {
             if (i != reachable.end()) {
                 /* the sub-graph for this function is already constructed */
                 reachable.erase(i);
+            }
+        }
+    }
+
+    // initialize nodes
+    for (PAG::iterator it = pag->begin(), eit = pag->end(); it!=eit; ++it) {
+        NodeID nodeId = it->first;
+        PAGNode *node = it->second;
+        if (shouldAddNode(node, entry, reachable)) {
+            if (!hasConstraintNode(nodeId)) {
+                addConstraintNode(new ConstraintNode(nodeId), nodeId);
             }
         }
     }
@@ -207,6 +206,36 @@ void ConstraintGraph::computeReachableFunctions(const Function *entry,
             }
         }
     }
+}
+
+bool ConstraintGraph::shouldAddNode(PAGNode *node,
+                                    const Function *entry,
+                                    FunctionSet &reachable) {
+    if (!entry) {
+        return true;
+    }
+
+    if (!node->hasValue()) {
+        return true;
+    }
+
+    const Instruction *inst = dyn_cast<Instruction>(node->getValue());
+    if (!inst) {
+        return true;
+    }
+
+    const BasicBlock *bb = inst->getParent();
+    if (!bb) {
+        /* this must be one of our cloned values (for allocation sites) */
+        return true;
+    }
+
+    const Function *f = bb->getParent();
+    if (!f) {
+        return true;
+    }
+
+    return reachable.find(f) != reachable.end();
 }
 
 bool ConstraintGraph::shouldAddEdge(PAGEdge *edge,
