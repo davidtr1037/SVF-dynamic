@@ -87,6 +87,14 @@ void AndersenDynamic::weakUpdate(NodeID src, NodeID dst) {
 
 void AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     PointsTo &pts = getPts(src);
+
+    /* update the reverse mapping */
+    for (NodeID target : pts) {
+        PointsTo &rev = getRevPts(target);
+        rev.reset(src);
+    }
+
+    /* update the direct mapping */
     pts.clear();
     if (dst != getPAG()->getNullPtr()) {
         pts.set(dst);
