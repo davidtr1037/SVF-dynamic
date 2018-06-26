@@ -63,10 +63,8 @@ void ConstraintGraph::buildCG(const llvm::Function *entry) {
     for (PAG::iterator it = pag->begin(), eit = pag->end(); it!=eit; ++it) {
         NodeID nodeId = it->first;
         PAGNode *node = it->second;
-        if (shouldAddNode(node, entry, reachable)) {
-            if (!hasConstraintNode(nodeId)) {
-                addConstraintNode(new ConstraintNode(nodeId), nodeId);
-            }
+        if (!hasConstraintNode(nodeId)) {
+            addConstraintNode(new ConstraintNode(nodeId), nodeId);
         }
     }
 
