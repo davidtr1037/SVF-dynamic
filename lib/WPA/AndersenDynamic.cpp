@@ -79,13 +79,17 @@ bool AndersenDynamic::updateCallGraph(const CallSiteToFunPtrMap& callsites) {
     return !newEdges.empty();
 }
 
-void AndersenDynamic::weakUpdate(NodeID src, NodeID dst) {
+bool AndersenDynamic::weakUpdate(NodeID src, NodeID dst) {
+    bool changed = false;
+
     if (dst != getPAG()->getNullPtr()) {
-        addPts(src, dst);
+        changed = addPts(src, dst);
     }
+
+    return changed;
 }
 
-void AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
+bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     PointsTo &pts = getPts(src);
 
     /* update the reverse mapping */
@@ -99,4 +103,6 @@ void AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     if (dst != getPAG()->getNullPtr()) {
         pts.set(dst);
     }
+
+    return true;
 }

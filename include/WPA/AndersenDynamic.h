@@ -20,9 +20,9 @@ public:
 
     void analyzeFunction(llvm::Module& module, llvm::Function *f);
 
-    void weakUpdate(NodeID src, NodeID dst);
+    bool weakUpdate(NodeID src, NodeID dst);
 
-    void strongUpdate(NodeID src, NodeID dst);
+    bool strongUpdate(NodeID src, NodeID dst);
 
 private:
 
