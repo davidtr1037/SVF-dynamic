@@ -9,14 +9,10 @@ using namespace analysisUtil;
 
 
 void AndersenDynamic::initialize(Module& module) {
-    /* TODO: do we need it? */
-    resetData();
     /* don't create the callgraph at this point... */
     PointerAnalysis::initialize(module, false);
     /* create the object only (without actually building the graph) */
     consCG = new ConstraintGraph(pag, false);
-    /* TODO: do we need it? */
-    stat = new AndersenStat(this);
 }
 
 void AndersenDynamic::analyzeFunction(Module& module, Function *f) {
