@@ -160,8 +160,6 @@ void PointerAnalysis::initialize(Module& module) {
             pag->print();
     }
 
-    typeSystem = new TypeSystem(pag);
-
     mod = &module;
 
     /// initialise pta call graph
