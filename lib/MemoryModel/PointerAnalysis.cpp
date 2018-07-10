@@ -128,7 +128,7 @@ void PointerAnalysis::destroy()
 /*!
  * Initialization of pointer analysis
  */
-void PointerAnalysis::initialize(Module& module) {
+void PointerAnalysis::initialize(Module& module, bool shouldInitializeCallGraph) {
 
     /// whether we have already built PAG
     if(pag == NULL) {
@@ -162,11 +162,18 @@ void PointerAnalysis::initialize(Module& module) {
 
     mod = &module;
 
+    if (shouldInitializeCallGraph) {
+        initializeCallGraph(module);
+    }
+}
+
+void PointerAnalysis::initializeCallGraph(llvm::Module &module) {
     /// initialise pta call graph
-    if(EnableThreadCallGraph)
-        ptaCallGraph = new ThreadCallGraph(mod);
-    else
-        ptaCallGraph = new PTACallGraph(mod);
+    if (EnableThreadCallGraph) {
+        ptaCallGraph = new ThreadCallGraph(&module);
+    } else {
+        ptaCallGraph = new PTACallGraph(&module);
+    }
     callGraphSCCDetection();
 }
 

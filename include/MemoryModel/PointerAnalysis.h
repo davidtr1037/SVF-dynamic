@@ -175,7 +175,10 @@ public:
     virtual ~PointerAnalysis();
 
     /// Initialization of a pointer analysis, including building symbol table and PAG etc.
-    virtual void initialize(llvm::Module& module);
+    virtual void initialize(llvm::Module& module, bool shouldInitializeCallGraph = true);
+
+    // ...
+    virtual void initializeCallGraph(llvm::Module &module);
 
     /// Finalization of a pointer analysis, including checking alias correctness
     virtual void finalize();
