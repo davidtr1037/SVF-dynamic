@@ -51,6 +51,7 @@ void AndersenDynamic::analyze(Module& module) {
         timeOfUpdateCallGraph += (cgUpdateEnd - cgUpdateStart) / TIMEINTERVAL;
     } while (reanalyze);
 
+    /* TODO: do we need it? */
     finalize();
 }
 
