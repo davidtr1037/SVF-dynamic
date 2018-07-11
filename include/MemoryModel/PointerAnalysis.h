@@ -489,6 +489,7 @@ protected:
 private:
     /// Points-to data
     PTDataTy* ptD;
+    PTDataTy* ptDBackup;
 
 public:
     /// Interface expose to users of our pointer analysis, given Location infos
@@ -515,6 +516,12 @@ public:
 
     virtual void dumpAllPts();
     //@}
+
+    /// ...
+    virtual void createBackup();
+
+    /// ...
+    virtual void restoreFromBackup();
 };
 
 /*!

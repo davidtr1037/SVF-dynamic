@@ -333,10 +333,13 @@ BVDataPTAImpl::BVDataPTAImpl(PointerAnalysis::PTATY type) : PointerAnalysis(type
     }
     else
         assert(false && "no points-to data available");
+
+    ptDBackup = NULL;
 }
 
 BVDataPTAImpl::BVDataPTAImpl(const BVDataPTAImpl &other) {
     ptD = new PTDataTy(*other.ptD);
+    ptDBackup = NULL;
 }
 
 /*!
@@ -636,6 +639,17 @@ void BVDataPTAImpl::onTheFlyCallGraphSolve(const CallSiteToFunPtrMap& callsites,
         } else
             resolveIndCalls(iter->first,getPts(iter->second),newEdges,callgraph);
     }
+}
+
+void BVDataPTAImpl::createBackup() {
+    /* TODO: check type */
+    ptDBackup = new PTDataTy(*ptD);
+}
+
+void BVDataPTAImpl::restoreFromBackup() {
+    delete ptD;
+    ptD = ptDBackup;
+    ptDBackup = NULL;
 }
 
 /*!
