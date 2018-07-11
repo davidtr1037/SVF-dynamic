@@ -647,6 +647,10 @@ void BVDataPTAImpl::createBackup() {
 }
 
 void BVDataPTAImpl::restoreFromBackup() {
+    if (!ptDBackup) {
+        assert(false);
+    }
+
     delete ptD;
     ptD = ptDBackup;
     ptDBackup = NULL;
