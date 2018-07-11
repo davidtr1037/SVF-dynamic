@@ -143,6 +143,9 @@ public:
     /// Constructor
     PointerAnalysis(PTATY ty = Default_PTA);
 
+    /// Copy constructor
+    PointerAnalysis(const PointerAnalysis &other);
+
     /// Type of pointer analysis
     inline PTATY getAnalysisTy() const {
         return ptaTy;
@@ -408,6 +411,9 @@ public:
 
     /// Constructor
     BVDataPTAImpl(PointerAnalysis::PTATY type);
+
+    /// Constructor
+    BVDataPTAImpl(const BVDataPTAImpl &other);
 
     /// Destructor
     virtual ~BVDataPTAImpl() {

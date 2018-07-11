@@ -79,6 +79,16 @@ public:
         reanalyze = false;
     }
 
+    /// Copy constructor
+    Andersen(const Andersen &other) :
+        WPASolver(other),
+        BVDataPTAImpl(other),
+        reanalyze(other.reanalyze),
+        consCG(NULL)
+    {
+
+    }
+
     /// Destructor
     virtual ~Andersen() {
         if (consCG != NULL)

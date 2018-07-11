@@ -12,6 +12,13 @@ public:
 
     }
 
+    AndersenDynamic(const AndersenDynamic &other) :
+        Andersen(other),
+        entry(NULL)
+    {
+
+    }
+
     void initialize(llvm::Module& module);
 
     bool updateCallGraph(const CallSiteToFunPtrMap& callsites);

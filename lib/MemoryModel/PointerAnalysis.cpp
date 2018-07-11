@@ -99,6 +99,18 @@ PointerAnalysis::PointerAnalysis(PTATY ty) :
     numOfIteration = 0;
 }
 
+PointerAnalysis::PointerAnalysis(const PointerAnalysis &other) :
+    print_stat(other.print_stat),
+    OnTheFlyIterBudgetForStat(other.OnTheFlyIterBudgetForStat),
+    ptaTy(other.ptaTy),
+    stat(NULL),
+    ptaCallGraph(NULL),
+    callGraphSCC(NULL),
+    typeSystem(NULL)
+{
+
+}
+
 /*!
  * Destructor
  */
@@ -321,6 +333,10 @@ BVDataPTAImpl::BVDataPTAImpl(PointerAnalysis::PTATY type) : PointerAnalysis(type
     }
     else
         assert(false && "no points-to data available");
+}
+
+BVDataPTAImpl::BVDataPTAImpl(const BVDataPTAImpl &other) {
+    ptD = new PTDataTy(*other.ptD);
 }
 
 /*!

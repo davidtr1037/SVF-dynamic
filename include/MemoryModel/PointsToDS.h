@@ -72,6 +72,15 @@ public:
     PTData(PTDataTY ty = Default): ptdTy(ty) {
     }
 
+    /// Copy constructor
+    PTData(const PTData &other) :
+        ptsMap(other.ptsMap),
+        revPtsMap(other.revPtsMap),
+        ptdTy(other.ptdTy)
+    {
+
+    }
+
     /// Destructor
     virtual ~PTData() {
     }

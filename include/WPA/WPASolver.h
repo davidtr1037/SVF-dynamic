@@ -57,6 +57,13 @@ protected:
     WPASolver(): _graph(NULL),scc(NULL)
     {
     }
+    /// Copy constructor
+    WPASolver(const WPASolver &other) :
+        _graph(NULL),
+        scc(NULL)
+    {
+
+    }
     /// Destructor
     virtual ~WPASolver() {
         delete scc;
