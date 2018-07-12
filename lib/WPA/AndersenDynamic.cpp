@@ -17,6 +17,7 @@ void AndersenDynamic::initialize(Module& module) {
 
 void AndersenDynamic::analyzeFunction(Module& module, Function *f) {
     entry = f;
+    createBackup();
     analyze(module);
 }
 
@@ -105,4 +106,9 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     }
 
     return true;
+}
+
+void AndersenDynamic::postAnalysisCleanup() {
+    restoreFromBackup();
+    Andersen::postAnalysisCleanup();
 }

@@ -31,6 +31,8 @@ public:
 
     bool strongUpdate(NodeID src, NodeID dst);
 
+    void postAnalysisCleanup();
+
 private:
 
     llvm::Function *entry;
