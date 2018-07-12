@@ -313,6 +313,14 @@ public:
             delete I->second;
 
     }
+
+    inline void clear() {
+        destroy();
+        IDToNodeMap.clear();
+        edgeNum = 0;
+        nodeNum = 0;
+    }
+
     /// Iterators
     //@{
     inline iterator begin() {
