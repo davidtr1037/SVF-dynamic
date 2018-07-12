@@ -216,6 +216,10 @@ void PointerAnalysis::resetObjFieldSensitive()
     }
 }
 
+void PointerAnalysis::postAnalysisCleanup() {
+    destroy();
+}
+
 /*!
  * Flag in order to dump graph
  */

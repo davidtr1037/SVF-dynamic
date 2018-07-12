@@ -521,3 +521,9 @@ void Andersen::updateNodeRepAndSubs(NodeID nodeId) {
     repSubs |= nodeSubs;
     consCG->setSubs(repId,repSubs);
 }
+
+void Andersen::postAnalysisCleanup() {
+    WPASolver::postAnalysisCleanup();
+    BVDataPTAImpl::postAnalysisCleanup();
+    consCG->postAnalysisCleanup();
+}

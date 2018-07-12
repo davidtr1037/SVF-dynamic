@@ -251,6 +251,16 @@ bool ConstraintGraph::shouldAddEdge(PAGEdge *edge,
     return reachable.find(bb->getParent()) != reachable.end();
 }
 
+void ConstraintGraph::postAnalysisCleanup() {
+    nodeToRepMap.clear();
+    nodeToSubsMap.clear();
+    AddrCGEdgeSet.clear();
+    directEdgeSet.clear();
+    LoadCGEdgeSet.clear();
+    StoreCGEdgeSet.clear();
+    nodesToBeCollapsed.clear();
+    clear();
+}
 
 /*!
  * Memory has been cleaned up at GenericGraph

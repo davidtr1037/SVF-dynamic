@@ -166,6 +166,8 @@ public:
         return consCG;
     }
 
+    virtual void postAnalysisCleanup();
+
 protected:
     /// Reanalyze if any constraint value changed
     bool reanalyze;

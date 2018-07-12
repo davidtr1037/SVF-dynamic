@@ -69,6 +69,14 @@ protected:
         delete scc;
         scc = NULL;
     }
+
+    /// ...
+    virtual void postAnalysisCleanup() {
+        worklist.clear();
+        delete scc;
+        scc = NULL;
+    }
+
     /// Get SCC detector
     inline SCC* getSCCDetector() const {
         return scc;

@@ -122,6 +122,8 @@ public:
         buildCG(entry);
     }
 
+    void postAnalysisCleanup();
+
     /// Get/add/remove constraint node
     //@{
     inline ConstraintNode* getConstraintNode(NodeID id) const {

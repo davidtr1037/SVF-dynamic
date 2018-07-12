@@ -225,6 +225,8 @@ protected:
     /// Reset all object node as field-sensitive.
     void resetObjFieldSensitive();
 
+    virtual void postAnalysisCleanup();
+
 public:
     /// Dump the statistics
     void dumpStat();
