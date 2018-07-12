@@ -50,9 +50,6 @@ void AndersenDynamic::analyze(Module& module) {
         double cgUpdateEnd = stat->getClk();
         timeOfUpdateCallGraph += (cgUpdateEnd - cgUpdateStart) / TIMEINTERVAL;
     } while (reanalyze);
-
-    /* TODO: do we need it? */
-    finalize();
 }
 
 bool AndersenDynamic::updateCallGraph(const CallSiteToFunPtrMap& callsites) {
@@ -109,6 +106,7 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
 }
 
 void AndersenDynamic::postAnalysisCleanup() {
+    /* TODO: field-sensitivity restore? */
     restoreFromBackup();
     Andersen::postAnalysisCleanup();
 }
