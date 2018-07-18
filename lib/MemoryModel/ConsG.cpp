@@ -48,6 +48,7 @@ static cl::opt<bool> ConsCGDotGraph("dump-consG", cl::init(false),
  */
 void ConstraintGraph::buildCG(const llvm::Function *entry) {
     FunctionSet reachable;
+    FunctionSet addedFunctions;
     if (entry) {
         computeReachableFunctions(entry, reachable);
         for (const Function *f : addedFunctions) {
