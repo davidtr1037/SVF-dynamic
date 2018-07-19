@@ -495,6 +495,8 @@ public:
     void collectVararg(const llvm::Function *val);
 
     void collectExternalObj(const llvm::Value *val, SymID symId);
+
+    void removeExternalObj(const llvm::Value *val);
     //@}
 
     /// special value

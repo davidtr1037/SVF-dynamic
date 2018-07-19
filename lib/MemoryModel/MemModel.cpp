@@ -862,7 +862,6 @@ void SymbolTableInfo::collectExternalObj(const Value *val, SymID symId) {
     ValueToIDMapTy::iterator iter = objSymMap.find(val);
     if (iter != objSymMap.end()) {
         assert(false);
-        return;
     }
 
     objSymMap.insert(make_pair(val, symId));
@@ -874,6 +873,31 @@ void SymbolTableInfo::collectExternalObj(const Value *val, SymID symId) {
 
     /* TODO: how should we update this? */
     totalSymNum = ++symId;
+}
+
+void SymbolTableInfo::removeExternalObj(const Value *val) {
+    /* TODO: refactor... */
+    ValueToIDMapTy::iterator iter = objSymMap.find(val);
+    if (iter != objSymMap.end()) {
+        assert(false);
+    }
+
+    SymID symId = iter->second;
+    objSymMap.erase(iter);
+
+    if (symTyMap.find(symId) == symTyMap.end()) {
+        assert(false);
+    }
+    symTyMap.erase(symId);
+
+    IDToMemMapTy::iterator i = objMap.find(symId);
+    if (i == objMap.end()) {
+        assert(false);
+    }
+    MemObj *mem = i->second;
+    objMap.erase(i);
+
+    delete mem;
 }
 
 /*!

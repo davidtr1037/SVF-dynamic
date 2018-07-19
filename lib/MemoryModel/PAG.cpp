@@ -335,6 +335,39 @@ NodeID PAG::addFIObjNode(const MemObj* obj, NodeID i)
     return addObjNode(obj->getRefVal(), node, i);
 }
 
+NodeID PAG::addExternalObjNode(const Value *val) {
+    NodeID newId = nodeNum;
+    SymbolTableInfo::SymbolInfo()->collectExternalObj(val, newId);
+    return addObjNode(val, newId);
+}
+
+void PAG::removeExternalObjNode(const Value *val) {
+    /* get the base node */
+    MemObj* mem = symInfo->getObj(symInfo->getObjSym(val));
+    NodeID base = getObjectNode(mem);
+
+    /* get all the sub-nodes */
+    MemObjToFieldsMap::iterator i = memToFieldsMap.find(base);
+    if (i == memToFieldsMap.end()) {
+        assert(false);
+    }
+    NodeBS &nodes = i->second;
+    for (NodeID nodeId : nodes) {
+        PAGNode *pagNode = getPAGNode(nodeId);
+        GepObjPN *gepObj = dyn_cast<GepObjPN>(pagNode);
+        if (gepObj) {
+            GepObjNodeMap.erase(std::make_pair(base, gepObj->getLocationSet()));
+        }
+        removeGNode(pagNode);
+        delete pagNode;
+    }
+
+    /* ... */
+    memToFieldsMap.erase(i);
+
+    /* ... */
+    symInfo->removeExternalObj(val);
+}
 
 /*!
  * Return true if it is an intra-procedural edge
