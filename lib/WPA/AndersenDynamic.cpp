@@ -106,7 +106,9 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
 }
 
 void AndersenDynamic::postAnalysisCleanup() {
-    /* TODO: field-sensitivity restore? */
     restoreFromBackup();
     Andersen::postAnalysisCleanup();
+
+    /* restore field-sensitivity state */
+    resetObjFieldSensitive();
 }
