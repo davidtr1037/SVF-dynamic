@@ -878,7 +878,7 @@ void SymbolTableInfo::collectExternalObj(const Value *val, SymID symId) {
 void SymbolTableInfo::removeExternalObj(const Value *val) {
     /* TODO: refactor... */
     ValueToIDMapTy::iterator iter = objSymMap.find(val);
-    if (iter != objSymMap.end()) {
+    if (iter == objSymMap.end()) {
         assert(false);
     }
 
