@@ -268,6 +268,10 @@ void Andersen::processGepPts(PointsTo& pts, const GepCGEdge* edge)
     for (PointsTo::iterator piter = pts.begin(), epiter = pts.end(); piter != epiter; ++piter) {
         /// get the object
         NodeID ptd = *piter;
+        if (!getPAG()->findPAGNode(ptd)) {
+            /* TODO: find a better solution! */
+            continue;
+        }
         /// handle blackhole and constant
         if (consCG->isBlkObjOrConstantObj(ptd)) {
             tmpDstPts.set(*piter);
