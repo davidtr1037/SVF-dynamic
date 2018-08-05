@@ -65,6 +65,8 @@ private:
 
     PAG::CallSiteToFunPtrMap indirectCallSites;
 
+    FunctionSet addedFunctions;
+
     void buildCG(const llvm::Function *entry = NULL);
 
     void computeReachableFunctions(const llvm::Function *entry, FunctionSet &results);
