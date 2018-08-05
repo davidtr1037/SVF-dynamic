@@ -139,6 +139,11 @@ void Andersen::processNode(NodeID nodeId) {
     for (PointsTo::iterator piter = getPts(nodeId).begin(), epiter =
                 getPts(nodeId).end(); piter != epiter; ++piter) {
         NodeID ptd = *piter;
+        if (!getPAG()->findPAGNode(ptd)) {
+            /* TODO: find a better solution! */
+            continue;
+        }
+
         // handle load
         for (ConstraintNode::const_iterator it = node->outgoingLoadsBegin(),
                 eit = node->outgoingLoadsEnd(); it != eit; ++it) {

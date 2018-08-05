@@ -675,6 +675,11 @@ void PointerAnalysis::resolveIndCalls(CallSite cs, const PointsTo& target, CallE
             return;
         }
 
+        if (!pag->findPAGNode(*ii)) {
+            /* TODO: find a better solution! */
+            continue;
+        }
+
         if(ObjPN* objPN = dyn_cast<ObjPN>(pag->getPAGNode(*ii))) {
             const MemObj* obj = pag->getObject(objPN);
 
