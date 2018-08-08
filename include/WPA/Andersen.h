@@ -161,6 +161,10 @@ public:
         return getPTDataTy()->getPts(sccRepNode(id));
     }
 
+    virtual inline PTDataTy::PtsMap getPtsMap() {
+        return getPTDataTy()->getPtsMap();
+    }
+
     /// Get constraint graph
     ConstraintGraph* getConstraintGraph() {
         return consCG;
