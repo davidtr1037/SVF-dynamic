@@ -259,6 +259,7 @@ void ConstraintGraph::postAnalysisCleanup() {
     LoadCGEdgeSet.clear();
     StoreCGEdgeSet.clear();
     nodesToBeCollapsed.clear();
+    addedFunctions.clear();
     clear();
 }
 
