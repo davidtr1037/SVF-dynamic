@@ -287,6 +287,14 @@ public:
         const MemObj* mem =  pag->getBaseObj(id);
         return mem->isFieldInsensitive();
     }
+    inline void setObjPermanentlyFI(NodeID id) {
+        MemObj* mem =  const_cast<MemObj*>(pag->getBaseObj(id));
+        mem->setPermanentlyFI();
+    }
+    inline bool isObjPermanentlyFI(NodeID id) {
+        MemObj* mem =  const_cast<MemObj*>(pag->getBaseObj(id));
+        return mem->isPermanentlyFI();
+    }
     ///@}
 
     /// Whether print statistics

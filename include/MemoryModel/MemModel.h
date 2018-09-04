@@ -239,6 +239,8 @@ private:
     ObjTypeInfo* typeInfo;
     /// Field-sensitivity
     bool field_insensitive;
+    /// TODO: add docs
+    bool permanentlyFI;
     /// dummy object
     bool isTainted;
 public:
@@ -287,6 +289,11 @@ public:
 
     /// Set the memory object to be field sensitive (up to max field limit)
     void setFieldSensitive();
+
+    /// TODO: add docs
+    void setPermanentlyFI() {
+        permanentlyFI = true;
+    }
 
     /// Whether it is a black hole object
     bool isBlackHoleObj() const;
@@ -343,6 +350,9 @@ public:
     }
     inline bool isFieldInsensitive() const {
         return field_insensitive;
+    }
+    inline bool isPermanentlyFI() const {
+        return permanentlyFI;
     }
     inline bool hasPtrObj() const {
         return typeInfo->hasPtrObj();

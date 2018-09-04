@@ -211,8 +211,13 @@ bool PointerAnalysis::isLocalVarInRecursiveFun(NodeID id) const
 void PointerAnalysis::resetObjFieldSensitive()
 {
     for (PAG::iterator nIter = pag->begin(); nIter != pag->end(); ++nIter) {
-        if(ObjPN* node = dyn_cast<ObjPN>(nIter->second))
-            const_cast<MemObj*>(node->getMemObj())->setFieldSensitive();
+        if (ObjPN* node = dyn_cast<ObjPN>(nIter->second)) {
+            MemObj *mem = const_cast<MemObj*>(node->getMemObj());
+            if (!mem->isPermanentlyFI()) {
+                /* in this case, we want to stay field insensitive */
+                mem->setFieldSensitive();
+            }
+        }
     }
 }
 
