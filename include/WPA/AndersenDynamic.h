@@ -8,12 +8,13 @@
 
 class AndersenDynamic : public Andersen {
 public:
-    AndersenDynamic() : Andersen(Andersen_WPA), entry(NULL) {
+    AndersenDynamic() : Andersen(Andersen_WPA), refCount(0), entry(NULL) {
 
     }
 
     AndersenDynamic(const AndersenDynamic &other) :
         Andersen(other),
+        refCount(0),
         entry(NULL)
     {
 
@@ -32,6 +33,8 @@ public:
     bool strongUpdate(NodeID src, NodeID dst);
 
     void postAnalysisCleanup();
+
+    unsigned int refCount;
 
 private:
 
