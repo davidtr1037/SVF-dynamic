@@ -17,6 +17,7 @@ void AndersenDynamic::initialize(Module& module) {
 
 void AndersenDynamic::analyzeFunction(Module& module, Function *f) {
     entry = f;
+    getPAG()->clearAddedFields();
     createBackup();
     analyze(module);
 }
@@ -106,6 +107,7 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
 }
 
 void AndersenDynamic::postAnalysisCleanup() {
+    getPAG()->restoreFields();
     restoreFromBackup();
     Andersen::postAnalysisCleanup();
 }
