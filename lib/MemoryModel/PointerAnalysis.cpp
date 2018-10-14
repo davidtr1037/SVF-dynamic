@@ -221,10 +221,6 @@ void PointerAnalysis::resetObjFieldSensitive()
     }
 }
 
-void PointerAnalysis::postAnalysisCleanup() {
-    destroy();
-}
-
 /*!
  * Flag in order to dump graph
  */
@@ -282,6 +278,12 @@ void PointerAnalysis::finalize() {
 
     if (!UsePreCompFieldSensitive)
         resetObjFieldSensitive();
+}
+
+void PointerAnalysis::postAnalysisCleanup() {
+    /* restore field-sensitivity state */
+    resetObjFieldSensitive();
+    destroy();
 }
 
 /*!

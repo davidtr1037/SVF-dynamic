@@ -186,6 +186,9 @@ public:
     /// Finalization of a pointer analysis, including checking alias correctness
     virtual void finalize();
 
+    /// TODO: add docs
+    virtual void postAnalysisCleanup();
+
     /// Start Analysis here (main part of pointer analysis). It needs to be implemented in child class
     virtual void analyze(llvm::Module& module) = 0;
 
@@ -224,8 +227,6 @@ protected:
 
     /// Reset all object node as field-sensitive.
     void resetObjFieldSensitive();
-
-    virtual void postAnalysisCleanup();
 
 public:
     /// Dump the statistics
