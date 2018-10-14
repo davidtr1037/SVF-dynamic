@@ -319,7 +319,11 @@ NodeID PAG::addGepObjNode(const MemObj* obj, const LocationSet& ls, NodeID i) {
            && "this node should not be created before");
     GepObjNodeMap[std::make_pair(base, ls)] = i;
     GepObjPN *node = new GepObjPN(obj->getRefVal(), i, obj, ls);
-    memToFieldsMap[base].set(i);
+    NodeBS &fields = memToFieldsMap[base];
+    if (!fields.test(i)) {
+        addedFields.push_back(std::make_pair(base, i));
+    }
+    fields.set(i);
     return addObjNode(obj->getRefVal(), node, i);
 }
 
@@ -330,7 +334,11 @@ NodeID PAG::addFIObjNode(const MemObj* obj, NodeID i)
 {
     //assert(findPAGNode(i) == false && "this node should not be created before");
     NodeID base = getObjectNode(obj);
-    memToFieldsMap[base].set(i);
+    NodeBS &fields = memToFieldsMap[base];
+    if (!fields.test(i)) {
+        addedFields.push_back(std::make_pair(base, i));
+    }
+    fields.set(i);
     FIObjPN *node = new FIObjPN(obj->getRefVal(), i, obj);
     return addObjNode(obj->getRefVal(), node, i);
 }
@@ -574,6 +582,19 @@ void PAG::print() {
         outs() << "\n";
     }
 
+}
+
+void PAG::clearAddedFields() {
+    addedFields.clear();
+}
+
+void PAG::restoreFields() {
+    for (std::pair<NodeID, NodeID> i : addedFields) {
+        NodeID base = i.first;
+        NodeID field = i.second;
+        memToFieldsMap[base].reset(field);
+    }
+    clearAddedFields();
 }
 
 /*

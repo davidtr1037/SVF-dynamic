@@ -91,6 +91,8 @@ private:
     /// this set of candidate pointers can change during pointer resolution (e.g. adding new object nodes)
     NodeBS candidatePointers;
 
+    std::vector<std::pair<NodeID, NodeID>> addedFields;
+
     /// Constructor
     PAG(bool buildFromFile) : fromFile(buildFromFile), curBB(NULL),curVal(NULL) {
         symInfo = SymbolTableInfo::SymbolInfo();
@@ -661,6 +663,10 @@ public:
         return false;
     }
     //@}
+
+    void clearAddedFields();
+
+    void restoreFields();
 
     /// Return graph name
     inline std::string getGraphName() const {
