@@ -72,6 +72,7 @@ private:
     NodeLocationSetMap GepValNodeMap;	///< Map a pair<base,off> to a gep value node id
     NodeLocationSetMap GepObjNodeMap;	///< Map a pair<base,off> to a gep obj node id
     MemObjToFieldsMap memToFieldsMap;	///< Map a mem object id to all its fields
+    MemObjToFieldsMap ignoredMemToFieldsMap;
     Inst2PAGEdgesMap inst2PAGEdgesMap;	///< Map a instruction to its PAGEdges
     PAGEdgeSet globPAGEdgesSet;	///< Global PAGEdges without control flow information
     FunToPAGEdgeSetMap funToEntryPAGEdges; ///< Map a function to its function entry PAGEdges (e.g., blackhole--ptr edge, no caller functions)

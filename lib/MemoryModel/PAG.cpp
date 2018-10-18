@@ -355,7 +355,19 @@ void PAG::removeExternalObjNode(const Value *val) {
     NodeID base = getObjectNode(mem);
 
     /* get all the sub-nodes */
-    MemObjToFieldsMap::iterator i = memToFieldsMap.find(base);
+    MemObjToFieldsMap::iterator i = ignoredMemToFieldsMap.find(base);
+    if (i != ignoredMemToFieldsMap.end()) {
+        NodeBS &nodes = i->second;
+        for (NodeID nodeId : nodes) {
+            PAGNode *pagNode = getPAGNode(nodeId);
+            removeGNode(pagNode);
+            delete pagNode;
+        }
+        nodes.clear();
+    }
+
+    /* get all the sub-nodes */
+    i = memToFieldsMap.find(base);
     if (i == memToFieldsMap.end()) {
         assert(false);
     }
@@ -593,6 +605,7 @@ void PAG::restoreFields() {
         NodeID base = i.first;
         NodeID field = i.second;
         memToFieldsMap[base].reset(field);
+        ignoredMemToFieldsMap[base].set(field);
     }
     clearAddedFields();
 }
