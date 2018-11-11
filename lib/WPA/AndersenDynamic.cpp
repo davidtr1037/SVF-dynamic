@@ -106,8 +106,26 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     return true;
 }
 
-void AndersenDynamic::postAnalysisCleanup() {
+void AndersenDynamic::join(AndersenDynamic *other) {
+    auto &otherMap = other->getPTDataTy()->getPtsMap();
+    for (auto i : otherMap) {
+        NodeID src = i.first;
+        PointsTo &otherPts = i.second;
+        PointsTo &pts = getPts(src);
+        if (pts == otherPts) {
+            continue;
+        }
+
+        for (NodeID x : otherPts) {
+            weakUpdate(src, x);
+        }
+    }
+}
+
+void AndersenDynamic::postAnalysisCleanup(bool restorePts) {
     getPAG()->restoreFields();
-    restoreFromBackup();
+    if (restorePts) {
+        restoreFromBackup();
+    }
     Andersen::postAnalysisCleanup();
 }

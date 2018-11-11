@@ -32,7 +32,9 @@ public:
 
     bool strongUpdate(NodeID src, NodeID dst);
 
-    void postAnalysisCleanup();
+    void join(AndersenDynamic *other);
+
+    void postAnalysisCleanup(bool restorePts = true);
 
     unsigned int refCount;
 
