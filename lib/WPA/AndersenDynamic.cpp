@@ -18,7 +18,9 @@ void AndersenDynamic::initialize(Module& module) {
 void AndersenDynamic::analyzeFunction(Module& module, Function *f) {
     entry = f;
     getPAG()->clearAddedFields();
-    createBackup();
+    if (useBackup) {
+        createBackup();
+    }
     analyze(module);
 }
 
@@ -122,9 +124,9 @@ void AndersenDynamic::join(AndersenDynamic *other) {
     }
 }
 
-void AndersenDynamic::postAnalysisCleanup(bool restorePts) {
+void AndersenDynamic::postAnalysisCleanup() {
     getPAG()->restoreFields();
-    if (restorePts) {
+    if (useBackup) {
         restoreFromBackup();
     }
     Andersen::postAnalysisCleanup();

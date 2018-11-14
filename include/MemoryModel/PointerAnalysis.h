@@ -435,6 +435,10 @@ public:
     inline void destroy() {
         delete ptD;
         ptD = NULL;
+        if (ptDBackup) {
+            delete ptDBackup;
+            ptDBackup = NULL;
+        }
     }
 
     /// Get points-to and reverse points-to
