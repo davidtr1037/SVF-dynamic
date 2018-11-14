@@ -126,6 +126,18 @@ public:
         return unionPts(getPts(dstKey),srcData);
     }
 
+    inline void clearPts(const Key& dstKey) {
+        auto i = ptsMap.find(dstKey);
+        assert(i != ptsMap.end());
+
+        Data &pts = i->second;
+        for (Key n : pts) {
+            Data &revPts = getRevPts(n);
+            revPts.reset(dstKey);
+        }
+        ptsMap.erase(i);
+    }
+
 protected:
     PtsMap ptsMap;
     PtsMap revPtsMap;

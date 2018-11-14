@@ -369,6 +369,10 @@ public:
     /// Get points-to targets of a pointer. It needs to be implemented in child class
     virtual PointsTo& getPts(NodeID ptr) = 0;
 
+    virtual void clearPts(NodeID ptr) {
+
+    }
+
     /// Clear points-to data
     virtual void clearPts() {
     }
@@ -492,6 +496,11 @@ protected:
         return ptD->addPts(id,ptd);
     }
     //@}
+
+    /// TODO: add docs
+    virtual inline void clearPts(NodeID id) {
+        ptD->clearPts(id);
+    }
 
     /// Clear all data
     virtual inline void clearPts() {
