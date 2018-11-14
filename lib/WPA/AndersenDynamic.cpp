@@ -124,10 +124,51 @@ void AndersenDynamic::join(AndersenDynamic *other) {
     }
 }
 
+void AndersenDynamic::filter() {
+    auto &map = getPTDataTy()->getPtsMap();
+    std::vector<NodeID> toClear;
+    for (auto i : map) {
+        NodeID src = i.first;
+        PointsTo &pts = i.second;
+        if (mayClearPts(pts)) {
+            clearPts(src);
+        }
+    }
+}
+
 void AndersenDynamic::postAnalysisCleanup() {
     getPAG()->restoreFields();
     if (useBackup) {
         restoreFromBackup();
     }
     Andersen::postAnalysisCleanup();
+}
+
+void AndersenDynamic::dump() {
+    auto &map = getPTDataTy()->getPtsMap();
+    errs() << "### PointsTo Dump ###\n";
+    errs() << "map size: " << map.size() << "\n";
+    for (auto i : map) {
+        NodeID src = i.first;
+        PointsTo &pts = i.second;
+        errs() << "src "  << src << ": [ ";
+        for (NodeID x : getPts(src)) {
+            errs() << x << " ";
+        }
+        errs() << "]\n";
+    }
+}
+
+bool AndersenDynamic::mayClearPts(PointsTo &pts) {
+    /* check if it's an empty set */
+    if (pts.count() == 0) {
+        return true;
+    }
+
+    /* check if it points only to a constant object (strings, ...) */
+    if (pts.count() == 1) {
+        return pts.test(getPAG()->getConstantNode());
+    }
+
+    return false;
 }
