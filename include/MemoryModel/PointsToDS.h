@@ -111,6 +111,16 @@ public:
         return revPtsMap[var];
     }
 
+    // ...
+    inline bool hasPts(const Key& var) {
+        return ptsMap.find(var) != ptsMap.end();
+    }
+
+    // ...
+    inline bool hasRevPts(const Key& var) {
+        return revPtsMap.find(var) != revPtsMap.end();
+    }
+
     /// Union/add points-to, used internally
     //@{
     inline bool addPts(const Key &dstKey, const Key& srcKey) {

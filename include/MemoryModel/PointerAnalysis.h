@@ -369,6 +369,15 @@ public:
     /// Get points-to targets of a pointer. It needs to be implemented in child class
     virtual PointsTo& getPts(NodeID ptr) = 0;
 
+    // ...
+    virtual PointsTo& getRevPts(NodeID ptr) = 0;
+
+    /// ...
+    virtual bool hasPts(NodeID ptr) = 0;
+
+    /// ...
+    virtual bool hasRevPts(NodeID ptr) = 0;
+
     virtual void clearPts(NodeID ptr) {
 
     }
@@ -454,6 +463,14 @@ public:
         return ptD->getRevPts(nodeId);
     }
     //@}
+
+    virtual inline bool hasPts(NodeID id) {
+        return ptD->hasPts(id);
+    }
+
+    virtual inline bool hasRevPts(NodeID id) {
+        return ptD->hasRevPts(id);
+    }
 
     /// Expand FI objects
     void expandFIObjs(const PointsTo& pts, PointsTo& expandedPts);
