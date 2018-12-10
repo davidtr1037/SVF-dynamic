@@ -124,6 +124,10 @@ void AndersenDynamic::join(AndersenDynamic *other) {
     }
 }
 
+void AndersenDynamic::clearPointsTo() {
+    clearPts();
+}
+
 void AndersenDynamic::postAnalysisCleanup() {
     getPAG()->restoreFields();
     if (useBackup) {
