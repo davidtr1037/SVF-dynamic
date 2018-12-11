@@ -108,6 +108,10 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     return true;
 }
 
+void AndersenDynamic::clearPointsTo() {
+    clearPts();
+}
+
 void AndersenDynamic::join(AndersenDynamic *other) {
     auto &otherMap = other->getPTDataTy()->getPtsMap();
     for (auto i : otherMap) {

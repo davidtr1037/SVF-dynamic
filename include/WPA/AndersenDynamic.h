@@ -44,6 +44,7 @@ public:
     void postAnalysisCleanup();
 
     void dump();
+    void clearPointsTo();
 
     unsigned int refCount;
 
