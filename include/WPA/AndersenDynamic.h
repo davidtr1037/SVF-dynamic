@@ -39,6 +39,8 @@ public:
 
     void join(AndersenDynamic *other);
 
+    void filter();
+
     void postAnalysisCleanup();
 
     void dump();
@@ -49,6 +51,8 @@ public:
     bool useBackup;
 
 private:
+
+    bool mayClearPts(PointsTo &pts);
 
     llvm::Function *entry;
 };
