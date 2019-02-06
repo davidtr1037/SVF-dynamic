@@ -37,6 +37,10 @@ public:
 
     bool strongUpdate(NodeID src, NodeID dst);
 
+    void clearPointsTo(NodeID src);
+
+    void clearPointsTo();
+
     void join(AndersenDynamic *other);
 
     void filter();
@@ -44,7 +48,6 @@ public:
     void postAnalysisCleanup();
 
     void dump();
-    void clearPointsTo();
 
     unsigned int refCount;
 

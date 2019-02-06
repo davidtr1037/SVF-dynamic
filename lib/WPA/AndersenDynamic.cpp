@@ -108,6 +108,10 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     return true;
 }
 
+void AndersenDynamic::clearPointsTo(NodeID src) {
+    clearPts(src);
+}
+
 void AndersenDynamic::clearPointsTo() {
     clearPts();
 }
