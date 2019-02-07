@@ -108,8 +108,10 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     return true;
 }
 
+/* this API doesn't delete the source node */
 void AndersenDynamic::clearPointsTo(NodeID src) {
-    clearPts(src);
+    PointsTo &pts = getPts(src);
+    pts.clear();
 }
 
 void AndersenDynamic::clearPointsTo() {
