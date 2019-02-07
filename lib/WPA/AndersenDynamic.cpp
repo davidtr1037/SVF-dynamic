@@ -147,7 +147,6 @@ void AndersenDynamic::filter() {
 }
 
 void AndersenDynamic::postAnalysisCleanup() {
-    getPAG()->restoreFields();
     if (useBackup) {
         restoreFromBackup();
     }
