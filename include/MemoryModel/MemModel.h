@@ -241,6 +241,8 @@ private:
     bool field_insensitive;
     /// TODO: add docs
     bool permanentlyFI;
+    /// ...
+    const llvm::Value *origRefVal;
     /// dummy object
     bool isTainted;
 public:
@@ -293,6 +295,16 @@ public:
     /// TODO: add docs
     void setPermanentlyFI() {
         permanentlyFI = true;
+    }
+
+    /// ...
+    inline const llvm::Value *getOrigRefVal() const {
+        return origRefVal;
+    }
+
+    /// ...
+    inline void setOrigRefVal(const llvm::Value *val) {
+        origRefVal = val;
     }
 
     /// Whether it is a black hole object

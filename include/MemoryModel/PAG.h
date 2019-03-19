@@ -597,7 +597,8 @@ public:
     }
     /// Add an object node for an external LLVM value (cloned, ...)
     /// This API should be used after the PAG construction
-    NodeID addExternalObjNode(const llvm::Value *val);
+    NodeID addExternalObjNode(const llvm::Value *val,
+                              const llvm::Value *origVal);
 
     void removeExternalObjNode(const llvm::Value *val);
 

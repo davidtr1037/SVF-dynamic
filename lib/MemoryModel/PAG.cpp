@@ -343,9 +343,12 @@ NodeID PAG::addFIObjNode(const MemObj* obj, NodeID i)
     return addObjNode(obj->getRefVal(), node, i);
 }
 
-NodeID PAG::addExternalObjNode(const Value *val) {
+NodeID PAG::addExternalObjNode(const Value *val,
+                               const Value *origVal) {
     NodeID newId = nodeNum;
     SymbolTableInfo::SymbolInfo()->collectExternalObj(val, newId);
+    MemObj *memObj = SymbolTableInfo::SymbolInfo()->getObj(newId);
+    memObj->setOrigRefVal(origVal);
     return addObjNode(val, newId);
 }
 
