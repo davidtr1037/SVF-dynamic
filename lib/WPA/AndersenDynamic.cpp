@@ -31,6 +31,8 @@ void AndersenDynamic::analyze(Module& module) {
     consCG->buildReducedCG(entry);
     setGraph(consCG);
 
+    updateFINodes();
+
     /* process address edges */
     processAllAddr();
 
@@ -84,7 +86,7 @@ bool AndersenDynamic::weakUpdate(NodeID src, NodeID dst) {
     bool changed = false;
 
     if (dst != getPAG()->getNullPtr()) {
-        changed = addPts(src, dst);
+        changed |= addPts(src, dst);
     }
 
     return changed;
@@ -106,6 +108,33 @@ bool AndersenDynamic::strongUpdate(NodeID src, NodeID dst) {
     }
 
     return true;
+}
+
+void AndersenDynamic::updateFINodes() {
+    auto &map = getPTDataTy()->getPtsMap();
+    std::vector<NodeID> toClear;
+    for (auto i : map) {
+        NodeID src = i.first;
+        PointsTo &pts = i.second;
+        for (NodeID dst : pts) {
+            fiUpdate(src, dst);
+        }
+    }
+}
+
+bool AndersenDynamic::fiUpdate(NodeID src, NodeID dst) {
+    if (dst == 0) {
+        return false;
+    }
+
+    PAGNode *node = getPAG()->getPAGNode(src);
+    GepObjPN *obj = dyn_cast<GepObjPN>(node);
+    if (obj) {
+        NodeID base = obj->getMemObj()->getSymId();
+        return addPts(base, dst);
+    }
+
+    return false;
 }
 
 /* this API doesn't delete the source node */

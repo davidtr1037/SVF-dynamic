@@ -37,6 +37,10 @@ public:
 
     bool strongUpdate(NodeID src, NodeID dst);
 
+    void updateFINodes();
+
+    bool fiUpdate(NodeID src, NodeID dst);
+
     void clearPointsTo(NodeID src);
 
     void clearPointsTo();
