@@ -127,6 +127,10 @@ bool AndersenDynamic::fiUpdate(NodeID src, NodeID dst) {
         return false;
     }
 
+    if (!getPAG()->findPAGNode(src)) {
+        return false;
+    }
+
     PAGNode *node = getPAG()->getPAGNode(src);
     GepObjPN *obj = dyn_cast<GepObjPN>(node);
     if (obj) {
