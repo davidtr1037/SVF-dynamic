@@ -376,6 +376,9 @@ public:
     inline NodeID getObjectNode(const llvm::Value *V) {
         return symInfo->getObjSym(V);
     }
+    inline bool hasObjectNode(const llvm::Value* V) {
+        return symInfo->hasObjSym(V);
+    }
     /// getObject - return mem object id
     inline NodeID getObjectNode(const MemObj *mem) {
         return mem->getSymId();

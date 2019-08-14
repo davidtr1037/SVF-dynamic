@@ -618,6 +618,14 @@ public:
         return iter->second;
     }
 
+    inline bool hasObjSym(const llvm::Value* val) {
+        if (isNullPtrSym(val) || isBlackholeSym(val)) {
+            return true;
+        } else {
+            return (objSymMap.find(val) != objSymMap.end());
+        }
+    }
+
     inline MemObj* getObj(SymID id) const {
         IDToMemMapTy::const_iterator iter = objMap.find(id);
         assert(iter!=objMap.end() && "obj not found");
